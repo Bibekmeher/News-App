@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import NavBar from "./components/NavBar/NavBar";
 import News from "./components/News/News";
@@ -7,10 +7,12 @@ import { router } from "./config/config";
 import Search from "./components/Search/Search";
 
 function App() {
+  const [language, setLanguage] = useState("en"); // Default language is English
+
   return (
     <>
       <Router>
-        <NavBar />
+        <NavBar setLanguage={setLanguage} />
         <Routes>
           {router.map((path) => (
             <Route
@@ -22,11 +24,12 @@ function App() {
                   key={path.key}
                   newscategory={path.category}
                   country={path.country}
+                  language={language}
                 />
               }
             />
           ))}
-          <Route path="/search/:query" element={<Search />} />
+          <Route path="/search/:query" element={<Search language={language} />} />
         </Routes>
       </Router>
     </>

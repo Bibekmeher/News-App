@@ -14,7 +14,7 @@ function NewsItem(props) {
       <Card.Img className="card-img" variant="top" src={imageUrl} alt={alt} />
       <Card.Body>
         <Card.Title>{title}</Card.Title>
-        <Card.Text className="card-description">{description}</Card.Text>
+        <Card.Text className="card-description">{description.slice(0,200)}</Card.Text>
         <Details channel={channel} published={published} />
         <Button
           className="card-btn"

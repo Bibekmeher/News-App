@@ -1,15 +1,20 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap");
-
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
-  background-color: rgb(36, 39, 41) !important;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Gradient from deep blue to teal */
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite; /* Smooth gradient animation */
+  color: #ffffff; /* Light text color for contrast */
 }
 
-::-webkit-scrollbar {
-  width: 3.5px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #464b50;
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
 }

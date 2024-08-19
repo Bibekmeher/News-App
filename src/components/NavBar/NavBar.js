@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
-import { Button, Form, FormControl, Nav, Navbar } from "react-bootstrap";
+import { Button, Dropdown, Form, FormControl, Nav, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -8,12 +8,12 @@ import { navbarBrand, navs } from "../../config/config";
 import logoImage from "../Images/logoImage.png";
 import "../NavBar/NavBar.css";
 
-function NavBar() {
+function NavBar({ setLanguage }) {
   const navigate = useNavigate();
-
   const navRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [language, setLanguageState] = useState("en"); // Track the current language
 
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
@@ -27,6 +27,13 @@ function NavBar() {
   };
 
   const handleNavClick = () => {
+    setIsCollapsed(true);
+  };
+
+  const handleLanguageChange = (lang) => {
+    setLanguageState(lang); // Update the local language state
+    setLanguage(lang); // Update the parent component's language state
+    navigate("/"); // Navigate to the homepage to refresh the news
     setIsCollapsed(true);
   };
 
@@ -85,6 +92,83 @@ function NavBar() {
               Search
             </Button>
           </Form>
+          <Dropdown style={{ marginLeft: '1rem' }}>
+            <Dropdown.Toggle
+              id="dropdown-basic"
+              style={{
+                backgroundColor: '#343a40', // Match the navbar color
+                border: 'none',
+                color: 'white',
+                fontSize: '1rem',
+                padding: '0.5rem 1rem',
+                borderRadius: '0.25rem',
+                boxShadow: '0 4px 8px rgba(0,0,0,0.3)',
+                transition: 'background-color 0.3s, box-shadow 0.3s'
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#495057'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#343a40'}
+            >
+              {language === "en" ? "English" : 
+               language === "hi" ? "Hindi" : 
+               language === "or" ? "Odia" : 
+               "Language"}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu
+              style={{
+                backgroundColor: '#343a40', // Match the navbar color
+                border: 'none',
+                borderRadius: '0.25rem',
+                boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+                minWidth: '150px',
+                padding: '0.5rem 0'
+              }}
+            >
+              <Dropdown.Item
+                onClick={() => handleLanguageChange("en")}
+                style={{
+                  color: 'white',
+                  fontSize: '0.875rem',
+                  padding: '0.5rem 1rem',
+                  transition: 'background-color 0.3s',
+                  borderRadius: '0.25rem'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#495057'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#343a40'}
+              >
+                English
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => handleLanguageChange("hi")}
+                style={{
+                  color: 'white',
+                  fontSize: '0.875rem',
+                  padding: '0.5rem 1rem',
+                  transition: 'background-color 0.3s',
+                  borderRadius: '0.25rem'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#495057'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#343a40'}
+              >
+                Hindi
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => handleLanguageChange("or")}
+                style={{
+                  color: 'white',
+                  fontSize: '0.875rem',
+                  padding: '0.5rem 1rem',
+                  transition: 'background-color 0.3s',
+                  borderRadius: '0.25rem'
+                }}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#495057'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#343a40'}
+              >
+                Odia
+              </Dropdown.Item>
+              {/* Add more languages here if needed */}
+            </Dropdown.Menu>
+          </Dropdown>
         </Navbar.Collapse>
       </Navbar>
     </>

@@ -11,34 +11,36 @@ import { endpointPath } from "../../config/api";
 import { Container, Header, card } from "./index";
 
 function News(props) {
-  const { newscategory, country } = props;
+  const { newscategory, country, language } = props;
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const capitaLize = (string) => {
+  const capitalize = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   const category = newscategory;
-  const title = capitaLize(category);
-  document.title = `${capitaLize(title)} - News`;
+  const title = capitalize(category);
+  document.title = `${capitalize(title)} - News`;
 
-  const updatenews = async () => {
+  const updateNews = async () => {
+    setLoading(true);
+
     try {
-      const response = await axios.get(endpointPath(country, category));
-      setLoading(true);
+      const response = await axios.get(endpointPath(country, category, language));
       const parsedData = response.data;
       setArticles(parsedData.articles);
-      setLoading(false);
+      setLoading(false); // Set loading to false after data is fetched
     } catch (error) {
       console.error(error);
+      setLoading(false); // Ensure loading is set to false in case of an error
     }
   };
 
   useEffect(() => {
-    updatenews();
+    updateNews();
     // eslint-disable-next-line
-  }, []);
+  }, [language]);
 
   return (
     <>
@@ -46,27 +48,23 @@ function News(props) {
         <Loading />
       ) : (
         <>
-          <Header>{header(capitaLize(category))}</Header>
+          <Header>{header(capitalize(category))}</Header>
           <Container>
             <Row>
-              {articles.map((element) => {
-                return (
-                  <Col sm={12} md={6} lg={4} xl={3} style={card} key={uuidv4()}>
-                    <NewsItem
-                      title={element.title}
-                      description={element.description}
-                      published={element.publishedAt}
-                      channel={element.source.name}
-                      alt="News image"
-                      publishedAt={element.publishedAt}
-                      imageUrl={
-                        element.image === null ? NullImage : element.image
-                      }
-                      urlNews={element.url}
-                    />
-                  </Col>
-                );
-              })}
+              {articles.map((element) => (
+                <Col sm={12} md={6} lg={4} xl={4} style={card} key={uuidv4()}>
+                  <NewsItem
+                    title={element.title}
+                    description={element.description}
+                    published={element.publishedAt}
+                    channel={element.source.name}
+                    alt="News image"
+                    publishedAt={element.publishedAt}
+                    imageUrl={element.image === null ? NullImage : element.image}
+                    urlNews={element.url}
+                  />
+                </Col>
+              ))}
             </Row>
           </Container>
         </>
@@ -83,6 +81,7 @@ News.defaultProps = {
 News.propTypes = {
   country: PropTypes.string,
   newscategory: PropTypes.string,
+  language: PropTypes.string.isRequired,
 };
 
 export default News;

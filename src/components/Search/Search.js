@@ -51,7 +51,7 @@ function Search() {
             <Row>
               {articles?.articles?.map((element) => {
                 return (
-                  <Col sm={12} md={6} lg={4} xl={3} style={card} key={uuidv4()}>
+                  <Col sm={12} md={6} lg={4} xl={4} style={card} key={uuidv4()}>
                     <NewsItem
                       title={element.title}
                       description={element.description}
